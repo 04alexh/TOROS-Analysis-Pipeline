@@ -23,6 +23,6 @@ This program will calibrate raw TOROS images. It performs a scaled bias+dark sub
 *use_mask:* Boolean, if true the program will put a circular mask on image before doing background subtraction. Set to False by default. \
 *cx:* Float, the x-center of the mask. Set to 0 by default. \
 *cy:* Float, the y-center of the mask. Set to 0 by default. \
-*r:* Float, the radius of the mask. Set to 0 by default. \
+*r:* Float, the radius of the mask. Set to 0 by default. 
 
 
