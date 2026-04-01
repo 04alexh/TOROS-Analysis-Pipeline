@@ -8,7 +8,7 @@ Programs have been divided into two categories: image reduction programs and ima
 
 ### TOROSphotoCalibration
 This program will calibrate raw TOROS images. It performs a scaled bias+dark subtraction, clips the overscan regions, performs flat-fielding, and does a background subtraction using the _SExtractor_ function from photutils. \
-**Inputs**
+**Inputs** \ \
 *raw_file:* String, path to raw image. \
 *bias_file:* String, path to bias image. \
 *dark_file:* String, path to dark image. \
