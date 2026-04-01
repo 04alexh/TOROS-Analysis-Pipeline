@@ -21,13 +21,12 @@ def TOROSaperturePhotometry(science_file , temp_dir , starList_file = "" ,
     from astropy.stats import sigma_clipped_stats , SigmaClip
     from photutils.detection import DAOStarFinder
     import numpy as np
-    from photutils.aperture import CircularAperture , aperture_photometry , CircularAnnulus , ApertureStats
+    from photutils.aperture import CircularAperture , CircularAnnulus , ApertureStats
     from astropy.table import Table , Column
     from astropy.wcs import WCS
     from sklearn.cluster import DBSCAN
     import subprocess
     from photutils.psf import fit_fwhm
-    import glob
     import gc
 
     ###Check if files exist
@@ -153,6 +152,8 @@ def TOROSaperturePhotometry(science_file , temp_dir , starList_file = "" ,
         print("DBSCAN fail.")
         return -1
 
+    print("Unmerged: " , len(source_centroids))
+    print("Merged: " , len(merged_ids))
     (merged_x , merged_y , merged_flux) = zip(*merged_ids)
     merged_sources = Table()
     merged_sources['xcentroid'] = merged_x
@@ -162,7 +163,7 @@ def TOROSaperturePhotometry(science_file , temp_dir , starList_file = "" ,
     #Ignore stars below specified SNR
     f = merged_sources['flux']
     snr_est = f / np.sqrt(np.abs(f)) #Assume poisson
-    mask = snr_est > 65
+    mask = snr_est > 50
     merged_sources = merged_sources[mask]
     print(merged_sources)
 
@@ -237,7 +238,7 @@ def TOROSaperturePhotometry(science_file , temp_dir , starList_file = "" ,
     print("Performing photometry...")
     positions = np.transpose((merged_sources['xcentroid'] , merged_sources['ycentroid']))
 
-    r_ap = 2 * fwhm
+    r_ap = 1.5 * fwhm
     r_in = 4 * fwhm
     r_out = 6 * fwhm
 
