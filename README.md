@@ -7,20 +7,20 @@ Programs have been divided into two categories: image reduction programs and ima
 ## Image Analysis Programs
 
 ### TOROSphotoCalibration
-This program will calibrate raw TOROS images. It performs a scaled bias+dark subtraction, clips the overscan regions, performs flat-fielding, and does a background subtraction using the _SExtractor_ function from photutils. \\
+This program will calibrate raw TOROS images. It performs a scaled bias+dark subtraction, clips the overscan regions, performs flat-fielding, and does a background subtraction using the _SExtractor_ function from photutils. \
 **Inputs**
-*raw_file:* String, path to raw image. \\
-*bias_file:* String, path to bias image. \\
-*dark_file:* String, path to dark image. \\
-*flat_file:* String, path to flat image. \\
+*raw_file:* String, path to raw image. \
+*bias_file:* String, path to bias image. \
+*dark_file:* String, path to dark image. \
+*flat_file:* String, path to flat image. \
 *science_file:* String, path to calibrated image.
-*write_bkg:* Boolean, if true the program will write the generated background image to disk. Set to False by default. \\
-*bkg_file:* String, path to background image. Set to "" by default. \\
-*write_nobkg:* Boolean, if true the program will write the science image before doing background subtraction. Set to False by default. \\
-*nobkg_file:* String, path to pre-background subtracted image. Set to "" by default. \\
-*use_mask:* Boolean, if true the program will put a circular mask on image before doing background subtraction. Set to False by default. \\
-*cx:* Float, the x-center of the mask. Set to 0 by default. \\
-*cy:* Float, the y-center of the mask. Set to 0 by default. \\
-*r:* Float, the radius of the mask. Set to 0 by default. \\
+*write_bkg:* Boolean, if true the program will write the generated background image to disk. Set to False by default. \
+*bkg_file:* String, path to background image. Set to "" by default. \
+*write_nobkg:* Boolean, if true the program will write the science image before doing background subtraction. Set to False by default. \
+*nobkg_file:* String, path to pre-background subtracted image. Set to "" by default. \
+*use_mask:* Boolean, if true the program will put a circular mask on image before doing background subtraction. Set to False by default. \
+*cx:* Float, the x-center of the mask. Set to 0 by default. \
+*cy:* Float, the y-center of the mask. Set to 0 by default. \
+*r:* Float, the radius of the mask. Set to 0 by default. \
 
 
