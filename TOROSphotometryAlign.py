@@ -1,5 +1,5 @@
 def TOROSphotometryAlign(master , comparator , aligned_file ,
-                         snr_threshold = 100):
+                         snr_threshold = 10):
     """
 
     :param master_file: String, file path to star list you want as basis for star ids
