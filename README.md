@@ -4,7 +4,7 @@ Full variability analysis pipeline for the TOROS telescope in Argentina. These a
 ## Structure
 Programs have been divided into two categories: image reduction programs and image analysis programs. The image reduction programs are made in Python (and older versions have some components also made in C++) and are meant to be run on images first. These programs will callibrate images, detect stars, and collate star data per image into organized CSV files. The image analysis programs are made in R and can do a variety of different analysis on individual stars and on the entire field as a whole. All the programs are broken down more through the documentation.
 
-## Image Analysis Programs
+## Image Reduction Programs
 
 ### TOROSphotoCalibration
 This program will calibrate raw TOROS images. It performs a scaled bias+dark subtraction, clips the overscan regions, performs flat-fielding, and does a background subtraction using the _SExtractor_ function from photutils. \
@@ -36,6 +36,18 @@ This program does many things at once. First, the science image is loaded in and
 *cx:* Float, the x-center of the mask. Set to 0 by default. \
 *cy:* Float, the y-center of the mask. Set to 0 by default. \
 *r:* Float, the radius of the mask. Set to 0 by default. 
+
+
+### TOROSphotometryAlign
+This program will ensure that StarIDs for all images reference the same star/centroid. This is done by matching the RA and DECs of stars from a "master" table to stars from a "comparator" table and changing the matched "comparator" StarIDs to the "master" StarID. \
+\
+*master:* Astropy Table, contains StarIDs that will be retained. \
+*comparator:* Astropy Table, contains StarIDs that will be changed. \
+*aligned_file:* String, path to the final photometry table that will have modified StarIDs. \
+*snr_threshold:* Integer, the SNR cutoff when filtering stars before alignment. Set to 10 by default. 
+
+
+## Image Analysis Programs
 
 
 
