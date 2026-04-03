@@ -35,7 +35,7 @@ This program does many things at once. First, the science image is loaded in and
 *use_mask:* Boolean, if true the program will put a circular mask on the image before doing star detection. Set to False by default. \
 *cx:* Float, the x-center of the mask. Set to 0 by default. \
 *cy:* Float, the y-center of the mask. Set to 0 by default. \
-*r:* Float, the radius of the mask. Set to 0 by default. \
+*r:* Float, the radius of the mask. Set to 0 by default. 
 
 
 
