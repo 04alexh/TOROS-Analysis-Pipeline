@@ -1,4 +1,4 @@
-TOROSobsTimeLSSTpredict <- function(lcs , test_targetID , sigma_level = 2 , N = 1000 , M = 10000 ,
+TOROSobsTimeLSSTpredict <- function(lcs , test_targetID , sigma_level = 2 , N = 100 , M = 10000 ,
                                     use_nameCustom = F , nameCustom = "" , observed_field = "Observed Field")
 {
 
@@ -8,20 +8,20 @@ TOROSobsTimeLSSTpredict <- function(lcs , test_targetID , sigma_level = 2 , N = 
   library(dplyr)
 
 
-  ###Load in required functions
   ###Load in function to calculate Stetson J and D90
   jstetcalc <- function(df)
   {
 
+    df <- df[order(df$TimeStamp) , ]
     mags <- df$AMag
-    mags <- sort(mags)
+    #mags <- sort(mags)
     counts <- 10^((-(mags - 25))/2.5)
     er <- 1 / sqrt(counts)
     rms <- sd(mags)
     nms <- length(mags)
 
     cut <- as.integer(.1 * nms)
-    d90 <- abs(mags[cut + 1] - mags[length(mags) - cut])
+    d90 <- abs(sort(mags)[cut + 1] - sort(mags)[length(mags) - cut])
 
     Jt <- rep(0.0 , nms)
     Jb <- rep(0.0 , nms)
@@ -58,8 +58,6 @@ TOROSobsTimeLSSTpredict <- function(lcs , test_targetID , sigma_level = 2 , N = 
     jstetson <- sum(Jt) / sum(Jb)
     result <- list(Jstetson = jstetson , D90 = d90)
 
-    # print("Returning JStet result")
-    # print(result)
     return(result)
 
 
@@ -73,6 +71,16 @@ TOROSobsTimeLSSTpredict <- function(lcs , test_targetID , sigma_level = 2 , N = 
   ###Load in target data
   target_star <- lcs[[as.character(test_targetID)]]
   lcs[[as.character(test_targetID)]] <- NULL #Remove target to avoid contamination
+  print(paste0("Original LCs list length: " , length(lcs)))
+
+  #Pull a random sample of lc in lcs so computation is less intensive
+  total_size <- length(lcs)
+  max_lcs <- .095 * total_size #For sample to be indepedent must be less than 10% of the total population
+  lcs <- sample(lcs , max_lcs)
+
+  print(paste0("LCs cut to " , length(lcs)))
+  Sys.sleep(3)
+
 
   #Initialize vectors
   thresh_list <- NULL
@@ -107,7 +115,7 @@ TOROSobsTimeLSSTpredict <- function(lcs , test_targetID , sigma_level = 2 , N = 
 
     ###Compute threshold J for this sample of size i
     cur_medJ <- median(magclip(compJ_list , sigma = 2)$x)
-    cur_sdJ <- sd(magclip(compJ_list , sigma = 2)$x)
+    cur_sdJ <- mad(magclip(compJ_list , sigma = 2)$x)
 
     cur_threshJ <- cur_medJ + (cur_sdJ * sigma_level)
     thresh_list <- c(thresh_list , cur_threshJ)
@@ -174,8 +182,15 @@ TOROSobsTimeLSSTpredict <- function(lcs , test_targetID , sigma_level = 2 , N = 
 
   }
 
-  #Find where samples first hit 100%
-  perf_idx <- which(new_df$Percent_Passed == 1)[1]
+  #Find where samples first hit 80%
+  perf_idx <- which(new_df$Percent_Passed >= .8)[1]
+
+  if (is.na(perf_idx))
+  {
+
+    perf_idx <- which.max(new_df$Percent_Passed)
+
+  }
   xmax <- new_df$Sample_Sizes[perf_idx + 20]
 
   #Create plot
@@ -202,30 +217,49 @@ TOROSobsTimeLSSTpredict <- function(lcs , test_targetID , sigma_level = 2 , N = 
 
   ###Now iterate through the target using the optimal observation number and record J vs. time interval
   I <- new_df$Sample_Sizes[perf_idx]
-  J_list <- NULL
-  tint_list <- NULL
+  print(paste0("I " , I))
+  J_list <- numeric(M)
+  tint_list <- numeric(M)
+
+  target_star <- target_star[order(target_star$TimeStamp) , ]
 
   print("Beginning interval stage...")
   for (j in 1:M)
   {
 
-    print(paste0("Iteration " , j))
+    #Pick start and end indices so that time intervals are randomly sampled
+    idx_start <- sample(1:(nrow(target_star) - I + 1) , 1)
+    idx_end <- sample((idx_start + I - 1):nrow(target_star) , 1)
 
-    #Take sample
-    sample_tar_idx <- sample(seq_len(nrow(target_star)) , size = I)
-    cut_tarlc <- target_star[sample_tar_idx , ]
-    cut_tarlc <- cut_tarlc %>%
-      arrange(TimeStamp)
+    #Create a window df using these indices
+    window <- target_star[idx_start:idx_end , ]
+
+    #Cut down cut to be size I randomly
+
+    if (nrow(window) > I)
+    {
+
+      idx <- sort(sample(seq_len(nrow(window)) , I))
+      cut <- window[idx ,]
+
+    }
+
+    #Order cut by timestamp
+    cut <- cut[order(cut$TimeStamp) , ]
 
     #Calculate J
-    J <- jstetcalc(cut_tarlc)[[1]]
-    J_list <- c(J_list , J)
+    if (nrow(cut) < 3) {next}
+    J <- jstetcalc(cut)[[1]]
 
-    #Find time interval between earliest and latest selected lc point
-    time_int <- cut_tarlc$TimeStamp[nrow(cut_tarlc)] - cut_tarlc$TimeStamp[1]
-    time_int <- as.numeric(time_int , units = "days")
-    tint_list <- c(tint_list , time_int)
+    #Calculate time interval
+    time_int <- as.numeric(
+      cut$TimeStamp[nrow(cut)] - cut$TimeStamp[1] , units = "days"
+    )
 
+    #Append
+    J_list[j] <- J
+    tint_list[j] <- time_int
+    
   }
 
   ###Build another dataframe
