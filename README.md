@@ -24,6 +24,7 @@ This program will calibrate raw TOROS images. It performs a scaled bias+dark sub
 *cy*: Float, the y-center of the mask. Set to 0 by default. \
 *r*: Float, the radius of the mask. Set to 0 by default.
 \
+\
 **OUTPUTS** \
 Output is a tuple. \
 *[0]*: Astropy table, contains the .fits data of the science image.
@@ -45,6 +46,7 @@ This program does many things at once. First, the science image is loaded in and
 *cy*: Float, the y-center of the mask. Set to 0 by default. \
 *r*: Float, the radius of the mask. Set to 0 by default. 
 \
+\
 **OUTPUTS** \
 *phot_table*: Astropy Table, contains the photometry data for all stars detected in the field.
 
@@ -60,6 +62,7 @@ This program will ensure that StarIDs for all images reference the same star/cen
 *aligned_file*: String, path to the final photometry table that will have modified StarIDs. \
 *snr_threshold*: Integer, the SNR cutoff when filtering stars before alignment. Set to 10 by default. 
 \
+\
 **OUTPUTS** \
 *aligned_tbl*: Astropy Table, contains the photometry data for the comparator field with the new master ids appended.
 
@@ -71,6 +74,7 @@ This program will load in individual folders containing nights worth of images i
 \
 **INPUTS** \
 *night_folders*: Vector, contains the paths to folders. These folders should contain the tables created from **TOROSphotometryAlign** that you want to analyze.
+\
 \
 **OUTPUTS** \
 Output is a list.
@@ -85,6 +89,7 @@ This program will seperate each night's dataframe into individual dataframe of i
 \
 **INPUTS** \
 *data_list:* List, contains the photometry data from the **$Photometry** component of the **TOROSloadInNights** output.
+\
 \
 **OUTPUTS** \
 Output is a list.
@@ -104,6 +109,7 @@ This program will create an unphase-folded light curve of a specified star. It w
 *use_nameCustom*: Boolean, if true the program will use a custom name for the star. Set to F by default. \
 *nameCustom*: String, the name of the star being plotted (purely for cosmetic purposes). Set to "" by default. 
 \
+\
 **OUTPUTS** \
 None
 
@@ -121,6 +127,7 @@ This program will create a phase-folded light curve of a specified star.
 *nameCustom*: String, the name of the star being plotted (purely for cosmetic purposes). Set to "" by default. \
 *bin*: Boolean, if true the program will bin the data points by taking the median of each night. Set to F by default.
 \
+\
 **OUTPUTS** \
 None
 
@@ -137,7 +144,7 @@ This program will create an LSP of a specified star using the lomb package in R.
 *nameCustom*: String, the name of the star being plotted (purely for cosmetic purposes). Set to "" by default. \
 *phaseFold*: Boolean, if true the program will use the periods from the LSP to create phase folded light curves of the target star. Set to F by default. \
 *phaseFold_num*: Integer, the number of LSP periods you want to be used in phase folding (ie if this number =3, then phase folded light curves will be made using the 1st, 2nd, and 3rd most significant periods). Set to 0 by default. \
-
+\
 **OUTPUTS**
 *lomb*: List, contains all data from the lsp function of the *lomb* package. \
 
@@ -149,7 +156,7 @@ This program will do RMS and variability analysis of the stars found in the fiel
 **INPUTS** \
 *lcs*: List, contains the photometry data from the **$LCs** component of the **TOROSmakeStarStatistics** output. \
 *observed_field*: String, the name of the field you are observing (purely for cosmetic purposes). Set to "Observed Field" by default. \
-
+\
 **OUTPUTS**
 Output is a list. \
 *$Variability*: Dataframe, contains the variability analysis data of the stars in the field. \
