@@ -9,6 +9,7 @@ Programs have been divided into two categories: image reduction programs and ima
 ### TOROSphotoCalibration
 This program will calibrate raw TOROS images. It performs a scaled bias+dark subtraction, clips the overscan regions, performs flat-fielding, and does a background subtraction using the _SExtractor_ function from photutils. \
 \
+**INPUTS**
 *raw_file*: String, path to raw image. \
 *bias_file*: String, path to bias image. \
 *dark_file*: String, path to dark image. \
@@ -22,7 +23,13 @@ This program will calibrate raw TOROS images. It performs a scaled bias+dark sub
 *cx*: Float, the x-center of the mask. Set to 0 by default. \
 *cy*: Float, the y-center of the mask. Set to 0 by default. \
 *r*: Float, the radius of the mask. Set to 0 by default.
+\
+**OUTPUTS**
+Output is a tuple. \
+*[0]*: Astropy table, contains the .fits data of the science image.
+*[1]*: fits header, the .fits header file for the science image.
 
+---
 
 ### TOROSaperturePhotometry
 This program does many things at once. First, the science image is loaded in and a preliminary star detection is done with a high sigma. Using these first preliminary detections, a FWHM for the image is fit and the true star detection is then run (both star detections use the DAOStarFinder algorithm). Next, to avoid multiple centroids being assigned to the same star due to photometric defects, a DBSCAN is run which mergers very nearby centroids together. In order to avoid effects from vignetting, any data too near the edges of the images are cut off (controlled by the edge_buffer parameter). Because TOROS does not natively save its WCS data, it must be created manually. This is done by assuming the user has astrometry.net installed natively on their device. For this program to run correctly, you must change the WSL paths so that they reflect the locations of you "solve-field" file and the matching field files. Once the WCS object is made, the actual photometry is performed on the detected centroids. The photometry is done with both an aperture and annuli to do local background subtraction. Once all statistics are made, a table is build and returned. This table can also be written to disk. \
