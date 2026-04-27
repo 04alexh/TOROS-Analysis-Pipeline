@@ -73,6 +73,7 @@ This program will load in individual folders containing nights worth of images i
 *night_folders*: Vector, contains the paths to folders. These folders should contain the tables created from **TOROSphotometryAlign** that you want to analyze.
 \
 **OUTPUTS**
+Output is a list.
 *$CommonIDs*: Vector, contains StarIDs detected among all fields.
 *$AllIDs*: Vector, contains every detected StarID.
 *$Photometry*: List, contains the photometry data of all stars detected.
@@ -82,12 +83,22 @@ ___
 ### TOROSmakeStarStatistics
 This program will seperate each night's dataframe into individual dataframe of information for every individual detected star. This program will also correct for any night offsets in magnitude that may be present and will perform a median-built systematic removal. The systematic removal runs in parallel to prevent the program from taking an absurd time to run for large data. Finally, this program returns a list containing the night offset data and a list of dataframes with each star's lightcurve. \
 \
+**INPUTS**
 *data_list:* List, contains the photometry data from the **$Photometry** component of the **TOROSloadInNights** output.
+\
+**OUTPUTS**
+Output is a list.
+*$LCs*: List, contains all of the adjusted photometric data for each star separated into individual dataframes.
+*$NightOffsets*: Vector, contains the magnitude offsets for each night in chronological order.
+
+---
 
 
 ### TOROSshowLightCurve
 This program will create an unphase-folded light curve of a specified star. It will also plot systematic data if available.
 \
+**INPUTS**
+*lcs*: List, contains the photometry data from the **$LCs** component of the **TOROSmakeStarStatistics** output.
 
 
 
