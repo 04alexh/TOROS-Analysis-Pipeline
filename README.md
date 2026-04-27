@@ -27,7 +27,7 @@ This program will calibrate raw TOROS images. It performs a scaled bias+dark sub
 \
 **OUTPUTS** \
 Output is a tuple. \
-*[0]*: Astropy table, contains the .fits data of the science image.
+*[0]*: Astropy table, contains the .fits data of the science image. \
 *[1]*: fits header, the .fits header file for the science image.
 
 ---
