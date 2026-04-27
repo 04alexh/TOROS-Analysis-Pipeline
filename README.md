@@ -77,7 +77,7 @@ This program will load in individual folders containing nights worth of images i
 \
 \
 **OUTPUTS** \
-Output is a list.
+Output is a list. \
 *$CommonIDs*: Vector, contains StarIDs detected among all fields.
 *$AllIDs*: Vector, contains every detected StarID.
 *$Photometry*: List, contains the photometry data of all stars detected.
@@ -92,7 +92,7 @@ This program will seperate each night's dataframe into individual dataframe of i
 \
 \
 **OUTPUTS** \
-Output is a list.
+Output is a list. \
 *$LCs*: List, contains all of the adjusted photometric data for each star separated into individual dataframes.
 *$NightOffsets*: Vector, contains the magnitude offsets for each night in chronological order.
 
@@ -138,14 +138,14 @@ This program will create an LSP of a specified star using the lomb package in R.
 \
 **INPUTS** \
 *lcs*: List, contains the photometry data from the **$LCs** component of the **TOROSmakeStarStatistics** output. \
-*lsp_targetID*: Integer, the StarID of the star you want the light curve of. \
+*lsp_targetID*: Integer, the StarID of the star you want the Lomb-Scargle Periodogram of. \
 *observed_field*: String, the name of the field you are observing (purely for cosmetic purposes). Set to "Observed Field" by default. \
 *use_nameCustom*: Boolean, if true the program will use a custom name for the star. Set to F by default. \
 *nameCustom*: String, the name of the star being plotted (purely for cosmetic purposes). Set to "" by default. \
 *phaseFold*: Boolean, if true the program will use the periods from the LSP to create phase folded light curves of the target star. Set to F by default. \
 *phaseFold_num*: Integer, the number of LSP periods you want to be used in phase folding (ie if this number =3, then phase folded light curves will be made using the 1st, 2nd, and 3rd most significant periods). Set to 0 by default. \
 \
-**OUTPUTS**
+**OUTPUTS** \
 *lomb*: List, contains all data from the lsp function of the *lomb* package. \
 
 ---
@@ -157,7 +157,7 @@ This program will do RMS and variability analysis of the stars found in the fiel
 *lcs*: List, contains the photometry data from the **$LCs** component of the **TOROSmakeStarStatistics** output. \
 *observed_field*: String, the name of the field you are observing (purely for cosmetic purposes). Set to "Observed Field" by default. \
 \
-**OUTPUTS**
+**OUTPUTS** \
 Output is a list. \
 *$Variability*: Dataframe, contains the variability analysis data of the stars in the field. \
 *$RMSData*: Dataframe, contains the RMS analysis data of the stars in the field. \
@@ -165,7 +165,32 @@ Output is a list. \
 ---
 
 ### TOROSobsTimeLSSTpredict
-This program will perform 
+This program will perform a sampling simulation to determine the optimal number of observations and time intervals of observations to recover the variability of a star. \
+**INPUTS** \
+*lcs*: List, contains the photometry data from the **$LCs** component of the **TOROSmakeStarStatistics** output. \
+*test_targetID*: Integer, the StarID of the star you want to test. \
+*sigma_level*: Integer, the sigma level above which a star is considered variable. Set to 2 by default.\
+*N*: Integer, the number of interations for the observation test. Set to 100 by default. \
+*M*: Integer, the number of interations for the interval test. Set to 10000 by default. \
+*use_nameCustom*: Boolean, if true the program will use a custom name for the star. Set to F by default. \
+*nameCustom*: String, the name of the star being plotted (purely for cosmetic purposes). Set to "" by default. \
+*observed_field*: String, the name of the field you are observing (purely for cosmetic purposes). Set to "Observed Field" by default. \
+\
+**OUTPUTS** \
+Output is a list. \
+*$LSSTPred1*: List, contains the observation number test data. \
+*$LSSTPred2*: List, contains the time interval test data. \
+
+##Misc
+
+### TOROSsimbadPositionList
+This program will create a .txt file containing the RA and DEC values of the flagged stars in your field, ordered by brightness. \
+**INPUTS** \
+*lcs*: List, contains the photometry data from the **$LCs** component of the **TOROSmakeStarStatistics** output. \
+*var_df*: Dataframe, contains the variability data from the **$Variability** component of the **TOROSvariabilityAndRMS** output. \
+\
+**OUTPUTS** \
+None
 
 
 
