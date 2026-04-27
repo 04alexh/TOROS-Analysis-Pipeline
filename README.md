@@ -181,7 +181,7 @@ Output is a list. \
 *$LSSTPred1*: List, contains the observation number test data. \
 *$LSSTPred2*: List, contains the time interval test data. \
 
-##Misc
+## Misc
 
 ### TOROSsimbadPositionList
 This program will create a .txt file containing the RA and DEC values of the flagged stars in your field, ordered by brightness. \
