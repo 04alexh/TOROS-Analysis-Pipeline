@@ -9,14 +9,6 @@
 
 namespace py = pybind11;
 
-/*int add(int i, int j) {
-    return i + j;
-}
-
-PYBIND11_MODULE(starmatcher, m) {
-    m.def("add", &add, "A function that adds two numbers");
-}*/
-
 struct MatchedPairs //Structure that creates objects representing stars that are "matched"
 {
     int comparator_id;
